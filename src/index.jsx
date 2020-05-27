@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Chat from './components/Chat';
-import hideKeyboard from './logic';
-import { sessionStorageItems } from './constants';
+import RootModule from './client/modules/rootModule/rootModule';
 
 const head = document.getElementsByTagName('head')[0];
 const meta = document.createElement('meta');
@@ -41,25 +39,16 @@ window.SmartChatBotApp = {
     fetch(config)
       .then(response => response.json())
       .then(data => {
-        ReactDOM.render(
-          <Chat hasUserAuth lang={locale} isE={true} settings={data} clientData={clientData} />,
-          block,
-        );
+        ReactDOM.render(<RootModule />, block);
       })
       .catch(() => {
-        ReactDOM.render(
-          <Chat hasUserAuth lang={locale} settings={{}} clientData={clientData} />,
-          block,
-        );
+        ReactDOM.render(<RootModule />, block);
       });
   },
   onLogout: () => {
     const chat = document.getElementById('SmartChatBotApp');
     chat && chat.remove();
-    sessionStorageItems.forEach(item => {
-      sessionStorage.removeItem(item);
-    });
   },
 };
 
-ReactDOM.render(<Chat hasUserAuth />, document.getElementById('root'));
+ReactDOM.render(<RootModule />, document.getElementById('root'));

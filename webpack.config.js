@@ -1,22 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssWebpackPlugin = require('mini-css-extract-plugin');
-const autoprefixer = require('autoprefixer');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
-  mode: 'development',
-  watch: true,
-  entry: {
-    public: path.resolve(__dirname, './src/index.jsx'),
-  },
+  entry: './src/index.jsx',
   output: {
-    path: path.resolve(__dirname, './build'),
-    filename: 'index.js',
+    path: path.join(__dirname, '/dist'),
+    filename: 'index-bundle.js',
   },
   devServer: {
-    port: 3020,
-    contentBase: path.resolve(__dirname, './build'),
+    port: 3010,
+    contentBase: path.resolve(__dirname, './dist'),
     hot: true,
     open: true,
     watchContentBase: true,
@@ -26,10 +22,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {
-      react: 'preact/compat',
-      'react-dom': 'preact/compat',
-    },
   },
   module: {
     rules: [
@@ -40,7 +32,6 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      { test: /\.html$/, use: 'html-loader' },
       {
         test: /\.less$/,
         use: [
@@ -60,22 +51,11 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.(svg|png|jpg|jpeg|gif)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: './images/',
-          },
-        },
-      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './public/index.html'),
-      filename: 'index.html',
+      template: './public/index.html',
     }),
     new CssWebpackPlugin({
       filename: 'style.css',
