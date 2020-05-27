@@ -1,21 +1,45 @@
 import { act } from 'react-dom/test-utils';
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ChatWindow } from '../ChatWindow';
+import ChatWindowConsumer from '../ChatWindow';
 import 'jest-styled-components';
 
 describe('ChatWindow component', () => {
   let wrapper;
   let componentWindow;
+  let props = {
+    messagesHistory: [
+      {
+        type: 'botMessage',
+        data: {
+          type: 'text',
+          responseText:
+            'You will be redirected toave to enter a security code provided by your bank. ',
+          responseActions: false,
+          responseImageURL: '',
+          responseID: '0.9839613481985006',
+          time: '10:22',
+        },
+      },
+    ],
+    windowCurrentWidth: 100,
+    windowCurrentHeight: 400,
+    inputPlaceholder: 'inputPlaceholder',
+    headerText: 'headerText',
+    headerHeight: '100px',
+    logoUrl: './images/logo.svg',
+    bodyBackground: 'red',
+  };
 
   beforeEach(() => {
-    wrapper = mount(<ChatWindow />);
+    wrapper = shallow(<ChatWindow {...props} />);
 
     act(() => {
       wrapper.update();
     });
 
-    componentWindow = wrapper.find('.Chat-window');
+    componentWindow = wrapper.find('.sbu-Chat-window');
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -24,11 +48,12 @@ describe('ChatWindow component', () => {
     expect(wrapper).not.toBeUndefined();
   });
 
-  test('Should not be undefined Window component', () => {
-    expect(componentWindow).not.toBeUndefined();
-  });
+  test('Should be "ChatWindowConsumer"', () => {
+    wrapper = shallow(<ChatWindowConsumer />);
 
-  test('Should rendered', () => {
-    expect(wrapper.length).toBe(1);
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
   });
 });

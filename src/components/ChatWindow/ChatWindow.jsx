@@ -1,14 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { ChatContext } from '../Chat';
 import WindowWrapper from './StyledChatWindow';
 import WindowResize from './Windows/WindowResize';
-import fetchResponse from './fetchResponse';
+import fetchResponse from './logic/fetchResponse';
 import Window from './Windows/Window';
-import maximizeImg from '../../../public/images/window-maximize-regular.svg';
-import regularSizeImg from '../../../public/images/window-restore-regular.svg';
-import saveMessage from './saveMessage';
-import getTime from './getTime';
+import { maximizeImg } from '../../constants';
+import { regularSizeImg } from '../../constants';
+import getSettingsAPI from './logic/getSettingsAPI';
+import {
+  getHistory,
+  addMessageHandler,
+  sendMessageHandler,
+  changeSizeImgHandler,
+  onWindowResizeHelper,
+  changeCurrentSizeHandler,
+} from './logic/ChatWindowHelper';
 import './ChatWindow.less';
 
 export const ChatWindow = props => {
@@ -19,110 +25,127 @@ export const ChatWindow = props => {
     setIsTyping,
     scrollElement,
     windowCurrentWidth,
-    keyAPI,
+    windowCurrentHeight,
+    statusAPI,
+    clientData,
     headerHeight,
     logoUrl,
     logoSize,
     bodyBackground,
+    drug,
+    currentPosition,
+    setEnabled,
+    setCurrentPosition,
+    isEnabled,
+    bottomPosition,
+    horizontalPosition,
+    currentSize,
+    setCurrentSize,
   } = props;
 
-  const addMessage = useCallback(value => {
-    setIsTyping(true);
-    scrollElement.current.scrollTop = scrollElement.current.scrollHeight;
-    if (value.data.type !== 'typing') {
-      value.data.responseActions && setIsClickedOption(false);
-      !value.data.nextResponse && setIsTyping(false);
-      setMessagesHistory(messagesHistory => [...messagesHistory, value]);
-    }
-  });
+  const [isClickedOption, setIsClickedOption] = useState(false);
 
-  useEffect(() => {
-    const history = sessionStorage.getItem('chat-history');
-    if (!history) sendMessage('hello', true);
-  }, []);
+  const addMessage = useCallback(
+    addMessageHandler(setIsTyping, scrollElement, setIsClickedOption, setMessagesHistory),
+  );
+  let settingsAPI = getSettingsAPI(statusAPI, clientData);
+  const sendMessage = useCallback(sendMessageHandler(settingsAPI, addMessage, fetchResponse));
 
-  const sendMessage = (value, isFirst) => {
-    if (value.trim() === '') return;
-    value = value
-      .split('\n')
-      .filter(item => item !== '')
-      .join('\n');
-    const message = {
-      type: 'userMessage',
-      data: {
-        inputText: value,
-        userID: '42gpj3',
-        clientData: '3956946',
-        userSubscription: null,
-        payload: keyAPI || 'UYFIX7PQ5274UZH2XLJT',
-        time: getTime(),
-      },
-    };
-    saveMessage(message);
-    fetchResponse(message.data, addMessage);
-
-    !isFirst && addMessage(message);
-  };
+  useEffect(getHistory(sendMessage), []);
 
   const [currentResizeImg, setCurrentResizeImg] = useState(
     isFullScreen ? regularSizeImg : maximizeImg,
   );
-  const changeSizeImg = useCallback(() =>
-    currentResizeImg === maximizeImg
-      ? setCurrentResizeImg(regularSizeImg)
-      : setCurrentResizeImg(maximizeImg),
+  const changeSizeImg = useCallback(
+    changeSizeImgHandler(currentResizeImg, setCurrentResizeImg, regularSizeImg, maximizeImg),
   );
 
-  const { width, height } = (sessionStorage.getItem('currentSize') &&
-    JSON.parse(sessionStorage.getItem('currentSize'))) || { width: null, height: null };
-  const [currentSize, setCurrentSize] = useState(
-    windowCurrentWidth > 1800
-      ? {
-          width: width || 380,
-          height: height || 670,
-        }
-      : {
-          width: width || 320,
-          height: height || 550,
-        },
-  );
-  const changeCurrentSize = (width, height) => {
-    sessionStorage.setItem('currentSize', JSON.stringify({ width, height }));
-    setCurrentSize({ width, height });
-  };
+  const changeCurrentSize = changeCurrentSizeHandler(setCurrentSize);
 
-  const [currentWidth, setCurrentWidth] = useState(320);
-  const [currentHeight, setCurrentHeight] = useState(550);
+  const [currentWidth, setCurrentWidth] = useState(currentSize.width);
+  const [currentHeight, setCurrentHeight] = useState(currentSize.height);
 
   const [inputValue, setInputValue] = useState('');
 
   const [inputHeight, setInputHeight] = useState(16);
 
-  const [isClickedOption, setIsClickedOption] = useState(false);
-  console.log(currentSize);
+  useEffect(
+    onWindowResizeHelper(
+      currentWidth,
+      windowCurrentWidth,
+      setCurrentWidth,
+      setCurrentHeight,
+      changeCurrentSize,
+      setEnabled,
+    ),
+    [windowCurrentWidth],
+  );
+
+  useEffect(() => {
+    if (
+      windowCurrentWidth < 800 ||
+      windowCurrentWidth - (currentPosition.right + currentSize.width) < 0 ||
+      windowCurrentHeight - (currentPosition.bottom + currentSize.height) < 0
+    ) {
+      sessionStorage.setItem(
+        'sbu-currentPosition',
+        JSON.stringify({ bottom: bottomPosition || 95, right: horizontalPosition || 20 }),
+      );
+      setCurrentPosition({ bottom: bottomPosition || 95, right: horizontalPosition || 20 });
+    }
+  }, [windowCurrentWidth]);
+
+  const [isRightResize, setRightResize] = useState(false);
+  const [isRightTopResize, setRightTopResize] = useState(false);
+  const [isLeftBottomResize, setLeftBottomResize] = useState(false);
+
   return (
     <WindowWrapper
       logoUrl={logoUrl}
       logoSize={logoSize}
+      isEnabled={isEnabled}
+      isRightResize={isRightResize}
+      isRightTopResize={isRightTopResize}
+      isLeftBottomResize={isLeftBottomResize}
+      currentPosition={currentPosition}
       bodyBackground={bodyBackground}
       headerHeight={headerHeight}
       isFullScreen={isFullScreen}
-      className="Сhat-window"
+      className="sbu-Сhat-window"
+      data-header-height={headerHeight}
       currentHeight={currentHeight}
       currentWidth={currentWidth}
       windowBorderColor={windowBorderColor}
+      currentSize={currentSize}
+      data-window-border-color={windowBorderColor}
+      windowCurrentHeight={windowCurrentHeight}
+      windowCurrentWidth={windowCurrentWidth}
     >
-      {!isFullScreen && windowCurrentWidth > 1366 ? (
+      {!isFullScreen && windowCurrentWidth > 1366 && windowCurrentHeight > 500 ? (
         <WindowResize
           {...props}
+          drug={drug}
+          isFullScreen={isFullScreen}
+          isRightResize={isRightResize}
+          isRightTopResize={isRightTopResize}
+          isLeftBottomResize={isLeftBottomResize}
+          setRightResize={setRightResize}
+          setRightTopResize={setRightTopResize}
+          setLeftBottomResize={setLeftBottomResize}
+          currentWidth={currentWidth}
+          currentHeight={currentHeight}
+          setCurrentPosition={setCurrentPosition}
+          currentPosition={currentPosition}
           setCurrentHeight={setCurrentHeight}
           currentSize={currentSize}
           changeCurrentSize={changeCurrentSize}
           isClickedOption={isClickedOption}
           setIsClickedOption={setIsClickedOption}
           scrollElement={scrollElement}
+          data-input-height={inputHeight}
           inputHeight={inputHeight}
           setInputHeight={setInputHeight}
+          data-input-value={inputValue}
           inputValue={inputValue}
           setInputValue={setInputValue}
           sendMessage={sendMessage}
@@ -133,10 +156,15 @@ export const ChatWindow = props => {
       ) : (
         <Window
           {...props}
+          drug={drug}
+          isFullScreen={isFullScreen}
+          currentWidth={currentWidth}
+          data-input-height={inputHeight}
           isClickedOption={isClickedOption}
           setIsClickedOption={setIsClickedOption}
           inputHeight={inputHeight}
           setInputHeight={setInputHeight}
+          data-input-value={inputValue}
           inputValue={inputValue}
           setInputValue={setInputValue}
           currentResizeImg={currentResizeImg}
@@ -146,24 +174,6 @@ export const ChatWindow = props => {
       )}
     </WindowWrapper>
   );
-};
-
-ChatWindow.propTypes = {
-  isTyping: PropTypes.bool,
-  addMessage: PropTypes.func,
-  headerText: PropTypes.string,
-  currentSize: PropTypes.object,
-  windowWidth: PropTypes.string,
-  windowHeight: PropTypes.string,
-  isFullScreen: PropTypes.bool,
-  setFullScreen: PropTypes.func,
-  toggleEnabled: PropTypes.func,
-  messagesHistory: PropTypes.array,
-  toggleFullScreen: PropTypes.func,
-  changeCurrentSize: PropTypes.func,
-  windowBorderColor: PropTypes.string,
-  windowCurrentWidth: PropTypes.number,
-  windowCurrentHeight: PropTypes.number,
 };
 
 export default props => (

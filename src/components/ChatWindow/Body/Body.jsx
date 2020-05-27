@@ -1,5 +1,4 @@
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useRef, useCallback } from 'react';
 import { ChatContext } from '../../Chat';
 import BodyWrapper from './StyledBody';
 import BotMessage from './BotMessage/BotMessage';
@@ -8,6 +7,7 @@ import UserMessage from './UserMessage/UserMessage';
 import FastForwardIcon from './FastForwardButton/FastForwardButton';
 import { getIconStatus, getLastSugID } from './logic';
 import { Scrollbar } from 'react-scrollbars-custom';
+import { changeVisibilityHandler, scrollDown, checkScroll } from './BodyHelper';
 import './Body.less';
 
 export const Body = props => {
@@ -28,26 +28,35 @@ export const Body = props => {
     scrollBackground,
     scrollThumbBackground,
     scrollWidth,
+    toggleFullScreenHandler,
+    currentWidth,
   } = props;
 
   const bodyRef = useRef(null);
 
   const [isFastForwardButtonVisible, setFastForwardButtonVisibility] = useState(false);
-  const changeVisibility = () => {
-    if (scrollElement.current) {
-      setFastForwardButtonVisibility(
-        scrollElement.current.scrollTop < scrollElement.current.scrollHeight - 1000,
-      );
-    }
-  };
+  const changeVisibility = changeVisibilityHandler(scrollElement, setFastForwardButtonVisibility);
+
+  window.addEventListener(
+    'orientationchange',
+    useCallback(() => {
+      checkScroll(scrollElement, scrollDown);
+    }),
+  );
 
   let lastSugID = messagesHistory && getLastSugID(messagesHistory);
 
+  const fastForwardHandler = useCallback(() =>
+    setTimeout(() => {
+      scrollDown(scrollElement)();
+    }, 100),
+  );
   return (
     <BodyWrapper
       ref={bodyRef}
-      inputHeight={inputHeight}
-      className="Сhat-window__body body"
+      id="body-wrapper"
+      className="sbu-Сhat-window__body sbu-body"
+      currentWidth={currentWidth}
       logoUrl={logoUrl}
       logoSize={logoSize}
       scrollWidth={scrollWidth}
@@ -55,11 +64,17 @@ export const Body = props => {
       scrollThumbBackground={scrollThumbBackground}
       headerHeight={headerHeight}
       bodyBackground={bodyBackground}
+      inputHeight={inputHeight}
+      data-logo-url={logoUrl}
+      data-logo-size={logoSize}
+      data-input-height={inputHeight}
+      data-header-height={headerHeight}
+      data-body-background={bodyBackground}
     >
-      {isFastForwardButtonVisible && <FastForwardIcon scrollElement={scrollElement} />}
+      {isFastForwardButtonVisible && <FastForwardIcon fastForwardHandler={fastForwardHandler} />}
 
       <Scrollbar ref={scrollElement} onScroll={changeVisibility}>
-        <div className="body__box ">
+        <div id="body-box" className="sbu-body__box ">
           {messagesHistory &&
             messagesHistory.map((message, index, array) => {
               return (
@@ -81,6 +96,7 @@ export const Body = props => {
                       isClickedOption={isClickedOption}
                       value={message.data}
                       scrollElement={scrollElement}
+                      toggleFullScreenHandler={toggleFullScreenHandler}
                       hasIcon={getIconStatus(message, array[index - 1])}
                       sendMessage={sendMessage}
                       isTyping={isTyping}
@@ -90,24 +106,11 @@ export const Body = props => {
                 </>
               );
             })}
-          <Typing isTyping={isTyping} typingGif={typingGif} />
+          <Typing id="typing" isTyping={isTyping} typingGif={typingGif} />
         </div>
       </Scrollbar>
     </BodyWrapper>
   );
-};
-
-Body.propTypes = {
-  setIsClickedOption: PropTypes.func,
-  isClickedOption: PropTypes.bool,
-  logoUrl: PropTypes.string,
-  isTyping: PropTypes.bool,
-  logoSize: PropTypes.string,
-  typingGif: PropTypes.string,
-  sendMessage: PropTypes.func,
-  headerHeight: PropTypes.string,
-  messagesHistory: PropTypes.array,
-  bodyBackground: PropTypes.string,
 };
 
 export default props => (

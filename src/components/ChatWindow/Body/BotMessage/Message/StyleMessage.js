@@ -10,7 +10,7 @@ export default styled.div`
     ${props =>
       hasBackground(props.value.type) ? 'none' : props.messageBorderColorBot || '#39C1DF'};
   margin-left: ${props => (props.hasIcon ? '5px' : '60px')};
-  margin-top: ${props => (props.hasIcon ? '30px' : '10px')};
+  margin-top: ${props => (props.hasIcon ? '30px' : '5px')};
   padding-left: ${props => (hasBackground(props.value.type) ? '0' : '')};
 
   a {

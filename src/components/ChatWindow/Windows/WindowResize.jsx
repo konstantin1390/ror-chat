@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { Resizable } from 're-resizable';
 import { ChatContext } from '../../Chat';
 import Window from './Window';
-import setSettings from './setResizeSettings';
+import { setWidth, changeSize, setResizeSettings, setTopLeftPosition } from './WindowsHelper';
+
+Object.defineProperty(Resizable.prototype, 'base', {
+  set: () => {},
+  get: () => {},
+});
 
 export const Resize = props => {
   const {
@@ -13,14 +17,41 @@ export const Resize = props => {
     changeCurrentSize,
     windowCurrentWidth,
     windowCurrentHeight,
+    currentPosition,
+    setCurrentPosition,
+    isRightResize,
+    setRightResize,
+    isRightTopResize,
+    setRightTopResize,
+    isLeftBottomResize,
+    setLeftBottomResize,
   } = props;
 
-  const setCurrentWithHandler = useCallback((e, dir, ref) => {
-    setCurrentWidth(parseInt(ref.style.width, 10));
-    setCurrentHeight(parseInt(ref.style.height, 10));
-  });
-  const changeCurrentSizeHandler = useCallback((e, dir, ref) =>
-    changeCurrentSize(parseInt(ref.style.width, 10), parseInt(ref.style.height, 10)),
+  const setCurrentWithHandler = useCallback(
+    setWidth(setCurrentWidth, setCurrentHeight, currentPosition, setCurrentPosition),
+  );
+
+  const changeCurrentSizeHandler = useCallback(
+    changeSize(
+      changeCurrentSize,
+      setRightResize,
+      currentPosition,
+      setCurrentPosition,
+      setRightTopResize,
+      setLeftBottomResize,
+    ),
+  );
+
+  const onResizeStartHandler = useCallback(
+    setTopLeftPosition(
+      currentSize,
+      setRightResize,
+      setCurrentPosition,
+      windowCurrentHeight,
+      windowCurrentWidth,
+      setRightTopResize,
+      setLeftBottomResize,
+    ),
   );
 
   const resizableRef = useRef(null);
@@ -28,10 +59,20 @@ export const Resize = props => {
 
   return (
     <Resizable
-      {...setSettings(currentSize, windowCurrentWidth, windowCurrentHeight)}
+      className="sbu-Resizable"
+      {...setResizeSettings(
+        currentSize,
+        windowCurrentWidth,
+        windowCurrentHeight,
+        currentPosition,
+        isRightResize,
+        isRightTopResize,
+        isLeftBottomResize,
+      )}
       ref={resizableRef}
       onResize={setCurrentWithHandler}
       onResizeStop={changeCurrentSizeHandler}
+      onResizeStart={onResizeStartHandler}
       defaultSize={{
         width: currentSize.width,
         height: currentSize.height,
@@ -40,14 +81,6 @@ export const Resize = props => {
       <Window {...props} />
     </Resizable>
   );
-};
-
-Resize.propTypes = {
-  currentSize: PropTypes.object,
-  setCurrentWidth: PropTypes.func,
-  changeCurrentSize: PropTypes.func,
-  windowCurrentWidth: PropTypes.number,
-  windowCurrentHeight: PropTypes.number,
 };
 
 export default props => (

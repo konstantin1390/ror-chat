@@ -1,8 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import { ChatContext } from '../../Chat';
 import HeaderWrapper from './StyledHeader';
-import exitImg from '../../../../public/images/drop-down-arrow.svg';
+import { exitImg } from '../../../constants';
 
 import './Header.less';
 
@@ -12,35 +11,58 @@ export const Header = props => {
     headerColor,
     headerHeight,
     changeSizeImg,
+    currentResizeImg,
     headerBackground,
     toggleFullScreen,
-    currentResizeImg,
     isFullScreen,
     headerBorderColor,
+    drug,
+    disableDraggable,
+    currentWidth,
+    isRightResize,
   } = props;
+
+  const onClickHandler = useCallback(() => {
+    toggleFullScreen();
+    changeSizeImg();
+  });
+
+  const drugStart = useCallback(e => {
+    if (!disableDraggable) {
+      document.addEventListener('mousemove', drug);
+      window.startMousePosition = { x: e.pageX, y: e.pageY };
+    }
+  });
 
   return (
     <HeaderWrapper
-      className="Chat-window__header header"
+      className="sbu-Chat-window__header sbu-header"
+      isFullScreen={isFullScreen}
+      currentWidth={currentWidth}
+      isRightResize={isRightResize}
+      disableDraggable={disableDraggable}
       headerColor={headerColor}
       headerHeight={headerHeight}
       headerBackground={headerBackground}
+      data-header-color={headerColor}
+      data-header-height={headerHeight}
+      data-header-background={headerBackground}
       headerBorderColor={headerBorderColor}
     >
-      <div className="header__wrapper wrapper">
-        <span className="wrapper__nav nav">
+      <div className="sbu-header__draggable" onMouseDown={drugStart} />
+      <div className="sbu-header__header-wrapper sbu-header-wrapper">
+        <span className="sbu-header-wrapper__nav sbu-nav">
           <img
             src={currentResizeImg}
             alt="fullScreenSize"
-            onClick={() => {
-              toggleFullScreen();
-              changeSizeImg();
-            }}
+            onClick={onClickHandler}
             style={isFullScreen ? { display: 'initial' } : null}
-            className="nav__change-size"
+            id="change-size-button"
+            className="sbu-nav__change-size"
           />
           <img
-            className="nav__exit"
+            id="exit-button"
+            className="sbu-nav__exit"
             src={exitImg}
             alt="exit"
             onClick={() => {
@@ -48,19 +70,12 @@ export const Header = props => {
             }}
           />
         </span>
-        <span className="wrapper__text">{props.children}</span>
+        <span id="title-text" className="sbu-header-wrapper__text">
+          {props.children}
+        </span>
       </div>
     </HeaderWrapper>
   );
-};
-
-Header.propTypes = {
-  headerColor: PropTypes.string,
-  headerHeight: PropTypes.string,
-  toggleEnabled: PropTypes.func,
-  headerBackground: PropTypes.string,
-  toggleFullScreen: PropTypes.func,
-  isFullScreen: PropTypes.bool,
 };
 
 export default props => (

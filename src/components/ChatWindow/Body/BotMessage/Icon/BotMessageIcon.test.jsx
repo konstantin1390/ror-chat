@@ -1,9 +1,10 @@
 import { act } from 'react-dom/test-utils';
 import 'jest-styled-components';
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { BotMessageIcon } from './BotMessageIcon';
-import avatarImg from '../../../../../../public/images/avatar.svg';
+import { avatarImg } from '../../../../../constants';
+import BotMessageIconConsumer from './BotMessageIcon';
 
 describe('BotMessageIcon component', () => {
   let wrapper;
@@ -25,7 +26,7 @@ describe('BotMessageIcon component', () => {
   });
 
   test('Should have default Background', () => {
-    const avatarWrapper = wrapper.find('.bot-message__icon');
+    const avatarWrapper = wrapper.find('.sbu-bot-message__icon');
     expect(avatarWrapper).toHaveStyleRule('background', '#39C1DF');
   });
 
@@ -40,7 +41,7 @@ describe('BotMessageIcon component', () => {
       wrapper.update();
     });
 
-    const avatarWrapper = wrapper.find('.bot-message__icon');
+    const avatarWrapper = wrapper.find('.sbu-bot-message__icon');
     expect(avatarWrapper).toHaveStyleRule('background', 'red');
   });
 
@@ -75,5 +76,14 @@ describe('BotMessageIcon component', () => {
       const img = wrapper.find('img');
       expect(img.props().alt).toBe('BotMessageIcon');
     });
+  });
+
+  test('Should be "BotMessageIconConsumer"', () => {
+    wrapper = shallow(<BotMessageIconConsumer />);
+
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
   });
 });

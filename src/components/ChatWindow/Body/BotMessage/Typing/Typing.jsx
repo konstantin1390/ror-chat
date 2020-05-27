@@ -1,19 +1,20 @@
 import React from 'react';
+import StyledTyping from './StyledTyping';
 import './Typing.less';
 
 export default ({ typingGif, isTyping }) => {
   return (
     <>
       {isTyping && (
-        <div className="message__typing">
+        <StyledTyping typingGif={typingGif} className="sbu-message__typing">
           {(typingGif && <img src={typingGif} alt="" />) || (
-            <div className="circle">
-              <div className="circleG first" />
-              <div className="circleG second" />
-              <div className="circleG third" />
+            <div className="sbu-circle">
+              <div className="sbu-circleG sbu-first" />
+              <div className="sbu-circleG sbu-second" />
+              <div className="sbu-circleG sbu-third" />
             </div>
           )}
-        </div>
+        </StyledTyping>
       )}
     </>
   );

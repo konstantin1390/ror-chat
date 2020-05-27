@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { ChatContext } from '../../../Chat';
 import BotMessageIcon from './Icon/BotMessageIcon';
 import Message from './Message/Message';
@@ -7,6 +6,7 @@ import Option from './Option/Option';
 import StyledBotMessage from './StyledBotMessage';
 import hasOptions from './hasOptions';
 import Time from './Message/Time/Time';
+import { scrollDown } from '../BodyHelper';
 
 import './BotMessage.less';
 
@@ -27,27 +27,32 @@ export const BotMessage = props => {
     scrollElement,
     setIsClickedOption,
     isClickedOption,
+    isLastMessage,
     lastSugID,
     botName,
+    toggleFullScreenHandler,
   } = props;
 
   useEffect(() => {
-    setTimeout(() => {
-      scrollElement ? (scrollElement.current.scrollTop = scrollElement.current.scrollHeight) : null;
-    }, 100);
+    setTimeout(scrollDown(scrollElement), 100);
   }, []);
 
   return (
-    <StyledBotMessage hasIcon={hasIcon} className="body__bot-message bot-message">
+    <StyledBotMessage
+      hasIcon={hasIcon}
+      data-last-message={isLastMessage}
+      className="sbu-body__bot-message sbu-bot-message"
+    >
       {hasIcon && !(value.type === 'typing') && (
         <BotMessageIcon
-          classNeme="bot-message__icon"
+          id="bot-icon"
+          className="sbu-bot-message__icon"
           messageIconUrlBot={messageIconUrlBot}
           messageIconBackgroundBot={messageIconBackgroundBot}
         />
       )}
       {!(value.type === 'typing') && (
-        <div className="bot-message__answer answer">
+        <div id="bot-answer" className="sbu-bot-message__answer sbu-answer">
           {hasIcon && value.type !== 'image' && value.type !== 'video' && (
             <Time
               time={value.time}
@@ -60,17 +65,22 @@ export const BotMessage = props => {
           )}
           <Message
             value={value}
-            className="answer__message"
+            id="message-answer"
+            className="sbu-answer__message"
             isFullScreen={isFullScreen}
             hasIcon={hasIcon}
+            toggleFullScreenHandler={toggleFullScreenHandler}
             scrollElement={scrollElement}
             messageColorBot={messageColorBot}
             messageBackgroundBot={messageBackgroundBot}
             messageBorderColorBot={messageBorderColorBot}
+            data-message-color-bot={messageColorBot}
+            data-message-background-bot={messageBackgroundBot}
+            data-message-border-color-bot={messageBorderColorBot}
           />
 
           {!isClickedOption && (
-            <div className="answer__options options">
+            <div id="answer-options" className="sbu-answer__options sbu-options">
               {hasOptions(value.responseID, lastSugID) &&
                 value.responseActions &&
                 value.responseActions.map((answer, index) => (
@@ -78,10 +88,13 @@ export const BotMessage = props => {
                     key={`${index}option`}
                     answer={answer}
                     sendMessage={sendMessage}
-                    fieldColor={fieldColor}
                     hasIcon={hasIcon}
+                    fieldColor={fieldColor}
                     fieldBackground={fieldBackground}
                     fieldBorderColor={fieldBorderColor}
+                    data-field-color={fieldColor}
+                    data-field-background={fieldBackground}
+                    data-field-border-color={fieldBorderColor}
                     setIsClickedOption={setIsClickedOption}
                   />
                 ))}
@@ -91,23 +104,6 @@ export const BotMessage = props => {
       )}
     </StyledBotMessage>
   );
-};
-
-BotMessage.propTypes = {
-  value: PropTypes.object.isRequired,
-  isTyping: PropTypes.bool,
-  fieldColor: PropTypes.string,
-  sendMessage: PropTypes.func,
-  hasIcon: PropTypes.bool.isRequired,
-  fieldBackground: PropTypes.string,
-  messageColorBot: PropTypes.string,
-  isClickedOption: PropTypes.bool,
-  setIsClickedOption: PropTypes.func,
-  fieldBorderColor: PropTypes.string,
-  messageIconUrlBot: PropTypes.string,
-  messageBackgroundBot: PropTypes.string,
-  messageBorderColorBot: PropTypes.string,
-  messageIconBackgroundBot: PropTypes.string,
 };
 
 export default props => (

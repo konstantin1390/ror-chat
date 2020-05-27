@@ -1,5 +1,5 @@
-.header {
-  width: 100%;
+.sbu-header {
+  position: relative;
   box-sizing: border-box;
   border: 1px solid #000000;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -7,28 +7,45 @@
   font-family: Roboto, sans-serif;
   font-size: 18px;
   line-height: 0;
+
+  user-select: none;
+
+  &__draggable {
+    position: absolute;
+    z-index: 10001;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-.wrapper {
+.sbu-header-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 15px;
 
   &__text {
     text-align: center;
   }
 }
 
-.nav {
+.sbu-nav {
   margin: 10px 5px 0 auto;
   cursor: pointer;
 
   & img {
+    position: absolute;
+    top: 10px;
+    z-index: 10100;
     width: 13px;
   }
 
   &__change-size {
-    margin-right: 10px;
+    right: 28px;
+  }
+
+  &__exit {
+    right: 5px;
   }
 }

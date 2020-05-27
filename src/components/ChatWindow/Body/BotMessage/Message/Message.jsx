@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { ChatContext } from '../../../../Chat';
 import { printMessage } from './Logic';
+import { scrollDown } from '../../BodyHelper';
 import MessageWrapper from './StyleMessage';
 import './Message.less';
 
@@ -15,12 +15,11 @@ export const Message = props => {
     isFullScreen,
     scrollElement,
     linkColor,
+    toggleFullScreenHandler,
   } = props;
 
   useEffect(() => {
-    setTimeout(() => {
-      scrollElement ? (scrollElement.current.scrollTop = scrollElement.current.scrollHeight) : null;
-    }, 100);
+    setTimeout(scrollDown(scrollElement), 100);
   }, []);
 
   return (
@@ -28,23 +27,18 @@ export const Message = props => {
       isFullScreen={isFullScreen}
       value={value}
       hasIcon={hasIcon}
-      className="answer__message message"
+      className="sbu-answer__message sbu-message"
       messageColorBot={messageColorBot}
       messageBackgroundBot={messageBackgroundBot}
       messageBorderColorBot={messageBorderColorBot}
+      data-message-color-bot={messageColorBot}
+      data-message-background-bot={messageBackgroundBot}
+      data-message-border-color-bot={messageBorderColorBot}
       linkColor={linkColor}
     >
-      {printMessage(value, isFullScreen)}
+      {printMessage(value, isFullScreen, toggleFullScreenHandler)}
     </MessageWrapper>
   );
-};
-
-Message.propTypes = {
-  value: PropTypes.object.isRequired,
-  hasIcon: PropTypes.bool.isRequired,
-  messageColorBot: PropTypes.string,
-  messageBackgroundBot: PropTypes.string,
-  messageBorderColorBot: PropTypes.string,
 };
 
 export default props => (

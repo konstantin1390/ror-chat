@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { ChatContext } from '../../../Chat';
 import Message from './StyledMessage';
 import UserIcon from './StyledUserMessage';
 import MessageWrapper from './StyledMessageWrapper';
+import MessageBlock from './StyledMessageBlock';
 import Time from './Time/Time';
-import iconUser from '../../../../../public/images/iconUser.svg';
+import { iconUser } from '../../../../constants';
+import { scrollDown } from '../BodyHelper';
 import './UserMessage.less';
 
 export const UserMessage = props => {
@@ -21,52 +22,48 @@ export const UserMessage = props => {
   } = props;
 
   useEffect(() => {
-    setTimeout(() => {
-      scrollElement ? (scrollElement.current.scrollTop = scrollElement.current.scrollHeight) : null;
-    }, 100);
+    setTimeout(scrollDown(scrollElement), 100);
   }, []);
 
   return (
-    <MessageWrapper className="body__user-message user-message" hasIcon={hasIcon}>
-      <div className="user-message__wrapper wrapper">
+    <MessageWrapper className="sbu-body__user-message sbu-user-message" hasIcon={hasIcon}>
+      <MessageBlock className="sbu-user-message__wrapper sbu-wrapper" hasIcon={hasIcon}>
         {hasIcon && (
           <Time
             time={value.time}
             messageColor={messageColor}
             messageBackground={messageBackground}
             messageBorderColor={messageBorderColor}
+            data-message-color={messageColor}
+            data-message-background={messageBackground}
+            data-message-border-color={messageBorderColor}
           />
         )}
         <Message
-          className="wrapper__message message"
+          className="sbu-wrapper__message sbu-message"
           messageColor={messageColor}
           messageBackground={messageBackground}
           messageBorderColor={messageBorderColor}
           hasIcon={hasIcon}
+          data-message-color={messageColor}
+          data-message-background={messageBackground}
+          data-message-border-color={messageBorderColor}
         >
           {value.inputText}
         </Message>
-      </div>
+      </MessageBlock>
 
       <UserIcon
-        className="user-message__icon icon"
-        messageIconBackground={messageIconBackground}
+        id="user-icon"
         hasIcon={hasIcon}
+        className="sbu-user-message__icon sbu-icon"
+        messageIconBackground={messageIconBackground}
+        data-message-icon-background={messageIconBackground}
       >
         <img src={messageIconUrl || iconUser} alt="iconUser" />
       </UserIcon>
     </MessageWrapper>
   );
-};
-
-UserMessage.propTypes = {
-  value: PropTypes.object.isRequired,
-  messageColor: PropTypes.string,
-  hasIcon: PropTypes.bool.isRequired,
-  messageIconUrl: PropTypes.string,
-  messageBackground: PropTypes.string,
-  messageBorderColor: PropTypes.string,
-  messageIconBackground: PropTypes.string,
 };
 
 export default props => (

@@ -1,7 +1,7 @@
 import { act } from 'react-dom/test-utils';
 import React from 'react';
 import { mount } from 'enzyme';
-import Image from './Image';
+import Image from '../Image';
 
 describe('Image component', () => {
   let wrapper;
@@ -9,7 +9,7 @@ describe('Image component', () => {
 
   beforeEach(() => {
     toggleFullScreenHandler = jest.fn();
-    wrapper = mount(<Image />);
+    wrapper = mount(<Image toggleFullScreenHandler={toggleFullScreenHandler} />);
 
     act(() => {
       wrapper.update();

@@ -1,24 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ChatContext } from '../../Chat';
 import MessageWrapper from './StyledMessage';
 import './Message.less';
+import localization from '../../../localization';
 
-export const Message = ({ iconMessageText, iconMessageColor, iconMessageBackground }) => (
+export const Message = ({ iconMessageText, iconMessageColor, iconMessageBackground, lang }) => (
   <MessageWrapper
-    className="Chat-icon__message message"
+    className="sbu-Chat-icon__message sbu-message"
     iconMessageColor={iconMessageColor}
     iconMessageBackground={iconMessageBackground}
+    data-icon-message-color={iconMessageColor}
+    data-icon-message-background={iconMessageBackground}
   >
-    <span className="message__text">{iconMessageText || 'Help with deposit?'}</span>
+    <span className="sbu-message__text">
+      {iconMessageText || localization[lang]['icon.text'] || 'Help with deposit?'}
+    </span>
   </MessageWrapper>
 );
-
-Message.propTypes = {
-  iconMessageText: PropTypes.string,
-  iconMessageColor: PropTypes.string,
-  iconMessageBackground: PropTypes.string,
-};
 
 export default props => (
   <ChatContext.Consumer>{context => <Message {...props} {...context} />}</ChatContext.Consumer>

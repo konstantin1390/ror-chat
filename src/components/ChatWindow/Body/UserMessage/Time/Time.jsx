@@ -8,6 +8,9 @@ const Time = props => {
       messageColor={messageColor}
       messageBackground={messageBackground}
       messageBorderColor={messageBorderColor}
+      data-message-color={messageColor}
+      data-message-background={messageBackground}
+      data-message-border-color={messageBorderColor}
     >
       {time}
     </StyledTime>

@@ -14,7 +14,7 @@ describe('StyledBody component', () => {
       wrapper.update();
     });
     expect(wrapper).toHaveStyleRule('margin-left', '55px', {
-      modifier: '.answer__options',
+      modifier: '.sbu-answer__options',
     });
   });
   test('Should have custom margin-left at children `answer__options`', () => {
@@ -25,7 +25,7 @@ describe('StyledBody component', () => {
       wrapper.update();
     });
     expect(wrapper).toHaveStyleRule('margin-left', '5px', {
-      modifier: '.answer__options',
+      modifier: '.sbu-answer__options',
     });
   });
 });

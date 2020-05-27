@@ -2,9 +2,10 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { Avatar } from './Avatar';
+import AvatarConsumer from './Avatar';
 import 'jest-styled-components';
 
-import avatarImg from '../../../../public/images/avatar.svg';
+import { avatarImg } from '../../../constants';
 
 describe('Avatar component', () => {
   let wrapper;
@@ -40,7 +41,7 @@ describe('Avatar component', () => {
   });
 
   test('Should have default Background', () => {
-    const avatarWrapper = wrapper.find('.Chat-icon__avatar');
+    const avatarWrapper = wrapper.find('.sbu-Chat-icon__avatar');
     expect(avatarWrapper).toHaveStyleRule('background', '#39C1DF');
   });
 
@@ -55,7 +56,7 @@ describe('Avatar component', () => {
       wrapper.update();
     });
 
-    const avatarWrapper = wrapper.find('.Chat-icon__avatar');
+    const avatarWrapper = wrapper.find('.sbu-Chat-icon__avatar');
     expect(avatarWrapper).toHaveStyleRule('background', 'red');
   });
 
@@ -89,6 +90,15 @@ describe('Avatar component', () => {
     test('Should have "iconAvatar" alt attribute', () => {
       const img = wrapper.find('img');
       expect(img.props().alt).toBe('iconAvatar');
+    });
+
+    test('Should be "AvatarConsumer"', () => {
+      wrapper = mount(<AvatarConsumer />);
+
+      act(() => {
+        wrapper.update();
+      });
+      expect(wrapper).not.toBeUndefined();
     });
   });
 });

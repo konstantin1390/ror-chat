@@ -1,5 +1,4 @@
-import saveMessage from './saveMessage';
-import getTime from './getTime';
+import { saveMessage, getTime } from './ChatWindowHelper';
 
 const requestOptions = {
   method: 'POST',
@@ -9,8 +8,8 @@ const requestOptions = {
   },
 };
 
-export default (value, addMessage) =>
-  fetch(`https://webapi.imperson.com/default.aspx/user_input?key=${value.payload}`, {
+export default (value, addMessage, settingsAPI) =>
+  fetch(`${settingsAPI.urlRequest}?key=${settingsAPI.key}`, {
     ...requestOptions,
     body: JSON.stringify(value),
   })
@@ -24,11 +23,11 @@ export default (value, addMessage) =>
           type: 'typing',
         },
       });
-      getResponse(JSON.parse(data.d).response, value.payload, addMessage);
+      getResponse(JSON.parse(data.d).response, settingsAPI, addMessage);
     });
 
-const getResponse = (token, key, addMessage) =>
-  fetch(`https://webapi.imperson.com/default.aspx/response?key=${key}`, {
+export const getResponse = (token, settingsAPI, addMessage) =>
+  fetch(`${settingsAPI.urlResponse}?key=${settingsAPI.key}`, {
     ...requestOptions,
     body: JSON.stringify({
       responseID: token,
@@ -52,6 +51,7 @@ const getResponse = (token, key, addMessage) =>
           responseActions: response.responseActions,
           responseImageURL: response.responseImageURL || '',
           responseID: Math.random().toString(),
+          nextResponse: response.nextResponse,
           time: getTime(),
         },
       };
@@ -59,10 +59,10 @@ const getResponse = (token, key, addMessage) =>
 
       addMessage(message);
       token = response.nextResponse;
-      token && getResponse(token, key, addMessage);
+      token && getResponse(token, settingsAPI, addMessage);
     });
 
-const suggestParse = responseActions => {
+export const suggestParse = responseActions => {
   const domParser = new DOMParser();
   return domParser
     .parseFromString(responseActions, 'text/xml')

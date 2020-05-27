@@ -1,14 +1,8 @@
 import React, { useCallback } from 'react';
 import OptionWrapper from './StyledOption';
-import PropTypes from 'prop-types';
 import './Option.less';
 
 export const Option = props => {
-  const sendOptionHandler = useCallback(() => {
-    sendMessage(answer);
-    setIsClickedOption(true);
-  });
-
   const {
     answer,
     fieldColor,
@@ -18,29 +12,26 @@ export const Option = props => {
     sendMessage,
     setIsClickedOption,
   } = props;
+
+  const sendOptionHandler = useCallback(() => {
+    sendMessage(answer);
+    setIsClickedOption(true);
+  });
   return (
     <OptionWrapper
       onClick={sendOptionHandler}
-      className="options__option"
+      className="sbu-options__option"
       fieldColor={fieldColor}
       hasIcon={hasIcon}
       fieldBackground={fieldBackground}
       fieldBorderColor={fieldBorderColor}
+      data-field-color={fieldColor}
+      data-field-background={fieldBackground}
+      data-field-border-color={fieldBorderColor}
     >
       <span>{answer}</span>
     </OptionWrapper>
   );
-};
-
-Option.propTypes = {
-  answer: PropTypes.string,
-  fieldColor: PropTypes.string,
-  sendMessage: PropTypes.func,
-  setIsClicked: PropTypes.func,
-  hasIcon: PropTypes.bool.isRequired,
-  fieldBackground: PropTypes.string,
-  fieldBorderColor: PropTypes.string,
-  setIsClickedOption: PropTypes.func,
 };
 
 export default Option;

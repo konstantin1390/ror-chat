@@ -1,10 +1,11 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount, shallow } from 'enzyme';
-import 'jest-styled-components';
 import { UserMessage } from './UserMessage';
+import UserMessageConsumer from './UserMessage';
+import 'jest-styled-components';
 
-import iconUserImg from '../../../../../public/images/iconUser.svg';
+import { iconUser } from '../../../../constants';
 
 describe('UserMessage component', () => {
   let wrapper;
@@ -22,7 +23,7 @@ describe('UserMessage component', () => {
           userSubscription: null,
           payload: 'UYFIX7PQ5274UZH2XLJT',
         }}
-        hasBeIconUser={true}
+        hasIcon={true}
       />,
     );
 
@@ -30,7 +31,7 @@ describe('UserMessage component', () => {
       wrapper.update();
     });
 
-    messageWrapper = wrapper.find('.body__user-message');
+    messageWrapper = wrapper.find('.sbu-body__user-message');
     textWrapper = wrapper.find('span');
     iconWrapper = wrapper.find('img');
   });
@@ -59,14 +60,14 @@ describe('UserMessage component', () => {
           userSubscription: null,
           payload: 'UYFIX7PQ5274UZH2XLJT',
         }}
-        hasBeIconUser={true}
+        hasIcon={true}
       />,
     );
 
     act(() => {
       wrapper.update();
     });
-    messageWrapper = wrapper.find('.body__user-message');
+    messageWrapper = wrapper.find('.sbu-body__user-message');
 
     expect(messageWrapper.length).toBe(1);
   });
@@ -85,7 +86,7 @@ describe('UserMessage component', () => {
         userSubscription: null,
         payload: 'UYFIX7PQ5274UZH2XLJT',
       },
-      hasBeIconUser: true,
+      hasIcon: true,
     };
 
     let wrapper = mount(<UserMessage {...props} />);
@@ -108,7 +109,7 @@ describe('UserMessage component', () => {
         userSubscription: null,
         payload: 'UYFIX7PQ5274UZH2XLJT',
       },
-      hasBeIconUser: true,
+      hasIcon: true,
     };
 
     let wrapper = mount(<UserMessage {...props} />);
@@ -131,7 +132,7 @@ describe('UserMessage component', () => {
         userSubscription: null,
         payload: 'UYFIX7PQ5274UZH2XLJT',
       },
-      hasBeIconUser: true,
+      hasIcon: true,
     };
 
     let wrapper = mount(<UserMessage {...props} />);
@@ -153,7 +154,7 @@ describe('UserMessage component', () => {
         userSubscription: null,
         payload: 'UYFIX7PQ5274UZH2XLJT',
       },
-      hasBeIconUser: true,
+      hasIcon: true,
     };
 
     let wrapper = mount(<UserMessage {...props} />);
@@ -168,6 +169,26 @@ describe('UserMessage component', () => {
 
   test('Should have default src attribute', () => {
     const img = wrapper.find('img');
-    expect(img.props().src).toBe(iconUserImg);
+    expect(img.props().src).toBe(iconUser);
+  });
+
+  test('Should be "UserMessageConsumer"', () => {
+    wrapper = mount(
+      <UserMessageConsumer
+        value={{
+          inputText: 'dfh',
+          userID: '42gpj3',
+          clientData: '3956946',
+          userSubscription: null,
+          payload: 'UYFIX7PQ5274UZH2XLJT',
+        }}
+        hasIcon={true}
+      />,
+    );
+
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
   });
 });

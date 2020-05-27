@@ -17,6 +17,9 @@ const Time = props => {
       messageColorBot={messageColorBot}
       messageBackgroundBot={messageBackgroundBot}
       messageBorderColorBot={messageBorderColorBot}
+      data-message-color-bot={messageColorBot}
+      data-message-background-bot={messageBackgroundBot}
+      data-message-border-color-bot={messageBorderColorBot}
     >
       {botName || 'Umi'} {time}
     </StyledTime>

@@ -2,13 +2,14 @@ import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { Message } from './Message';
+import MessageConsumer from './Message';
 import 'jest-styled-components';
 
 describe('Message component', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(<Message />);
+    wrapper = mount(<Message lang={'en'} />);
 
     act(() => {
       wrapper.update();
@@ -26,7 +27,7 @@ describe('Message component', () => {
   });
 
   test('Should have default Background', () => {
-    const messageWrapper = wrapper.find('.Chat-icon__message');
+    const messageWrapper = wrapper.find('.sbu-Chat-icon__message');
     expect(messageWrapper).toHaveStyleRule('background', '#39C1DF');
   });
 
@@ -35,18 +36,18 @@ describe('Message component', () => {
       iconMessageBackground: 'red',
     };
 
-    wrapper = mount(<Message {...props} />);
+    wrapper = mount(<Message {...props} lang={'en'} />);
 
     act(() => {
       wrapper.update();
     });
 
-    const messageWrapper = wrapper.find('.Chat-icon__message');
+    const messageWrapper = wrapper.find('.sbu-Chat-icon__message');
     expect(messageWrapper).toHaveStyleRule('background', 'red');
   });
 
   test('Should have default Text color', () => {
-    const iconMessage = wrapper.find('.Chat-icon__message');
+    const iconMessage = wrapper.find('.sbu-Chat-icon__message');
     expect(iconMessage).toHaveStyleRule('color', '#FFFFFF');
   });
 
@@ -55,18 +56,18 @@ describe('Message component', () => {
       iconMessageColor: 'red',
     };
 
-    wrapper = mount(<Message {...props} />);
+    wrapper = mount(<Message {...props} lang={'en'} />);
 
     act(() => {
       wrapper.update();
     });
 
-    const iconMessage = wrapper.find('.Chat-icon__message');
+    const iconMessage = wrapper.find('.sbu-Chat-icon__message');
     expect(iconMessage).toHaveStyleRule('color', 'red');
   });
 
   test('Should have default Text', () => {
-    const iconMessage = wrapper.find('.Chat-icon__message').find('span');
+    const iconMessage = wrapper.find('.sbu-Chat-icon__message').find('span');
     expect(iconMessage.text()).toBe('Help with deposit?');
   });
 
@@ -75,13 +76,22 @@ describe('Message component', () => {
       iconMessageText: 'custom text',
     };
 
-    wrapper = mount(<Message {...props} />);
+    wrapper = mount(<Message {...props} lang={'en'} />);
 
     act(() => {
       wrapper.update();
     });
 
-    const iconMessage = wrapper.find('.Chat-icon__message').find('span');
+    const iconMessage = wrapper.find('.sbu-Chat-icon__message').find('span');
     expect(iconMessage.text()).toBe('custom text');
+  });
+
+  test('Should be "MessageConsumer"', () => {
+    wrapper = mount(<MessageConsumer lang={'en'} />);
+
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
   });
 });

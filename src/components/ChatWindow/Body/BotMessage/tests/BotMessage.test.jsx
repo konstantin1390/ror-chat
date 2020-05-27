@@ -2,6 +2,7 @@ import { act } from 'react-dom/test-utils';
 import React from 'react';
 import { mount } from 'enzyme';
 import { BotMessage } from '../BotMessage';
+import BotMessageConsumer from '../BotMessage';
 import 'jest-styled-components';
 
 describe('BotMessage component', () => {
@@ -35,7 +36,7 @@ describe('BotMessage component', () => {
       hasIcon: true,
       value: {
         type: 'text',
-        responseText: 'response.responseText',
+        responseText: 'responseText',
         responseActions: ['1'],
       },
     };
@@ -45,7 +46,7 @@ describe('BotMessage component', () => {
       wrapper.update();
     });
 
-    const options = wrapper.find('.options');
+    const options = wrapper.find('.sbu-options');
     expect(options.length).toBe(1);
   });
 
@@ -56,7 +57,7 @@ describe('BotMessage component', () => {
       lastSugID: 1,
       value: {
         type: 'text',
-        responseText: 'response.responseText',
+        responseText: 'responseText',
         responseActions: ['1', '2'],
         responseID: 1,
       },
@@ -67,7 +68,16 @@ describe('BotMessage component', () => {
       wrapper.update();
     });
 
-    const options = wrapper.find('.options__option');
-    expect(options.length).toBe(4); //4 because styled-component generate extra div with same class ;
+    const options = wrapper.find('.sbu-options__option');
+    expect(options.length).toBe(4); //4 because styled-component generate extra div with same class;
+  });
+
+  test('Should be "BotMessageConsumer"', () => {
+    wrapper = mount(<BotMessageConsumer value={{}} hasIcon={true} />);
+
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
   });
 });

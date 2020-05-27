@@ -1,21 +1,42 @@
 import { act } from 'react-dom/test-utils';
 import React from 'react';
 import { Body } from '../Body';
+import BodyConsumer from '../Body';
 import { mount, shallow } from 'enzyme';
 import 'jest-styled-components';
 
 describe('Body component', () => {
   let wrapper;
   let bodyWrapper;
+  let sendMessage;
 
   beforeEach(() => {
-    wrapper = shallow(<Body />);
+    sendMessage = jest.fn();
+
+    let props = {
+      messagesHistory: [
+        {
+          type: 'botMessage',
+          data: {
+            type: 'text',
+            responseText:
+              'You will be redirected toave to enter a security code provided by your bank. ',
+            responseActions: false,
+            responseImageURL: '',
+            responseID: '0.9839613481985006',
+            time: '10:22',
+          },
+        },
+      ],
+      sendMessage: sendMessage,
+    };
+
+    wrapper = shallow(<Body {...props} />);
 
     act(() => {
       wrapper.update();
     });
-
-    bodyWrapper = wrapper.find('.body');
+    bodyWrapper = wrapper.find('.sbu-body');
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -36,45 +57,12 @@ describe('Body component', () => {
     expect(bodyWrapper.length).toBe(1);
   });
 
-  test('Should have custom background', () => {
-    const props = {
-      bodyBackground: 'red',
-    };
-
-    let wrapper = mount(<Body {...props} />);
+  test('Should be "BodyConsumer"', () => {
+    wrapper = mount(<BodyConsumer />);
 
     act(() => {
       wrapper.update();
     });
-
-    expect(wrapper).toHaveStyleRule('background', 'red');
-  });
-
-  test('Should have custom headerHeight', () => {
-    const props = {
-      headerHeight: '100px',
-    };
-
-    let wrapper = mount(<Body {...props} />);
-
-    act(() => {
-      wrapper.update();
-    });
-
-    expect(wrapper).toHaveStyleRule('height', 'calc( 100% - 100px )');
-  });
-
-  test('Should have custom logoUrl', () => {
-    const props = {
-      logoUrl: './images/logo.svg',
-    };
-
-    let wrapper = mount(<Body {...props} />);
-
-    act(() => {
-      wrapper.update();
-    });
-
-    expect(wrapper).toHaveStyleRule('background-image', "url('./images/logo.svg')");
+    expect(wrapper).not.toBeUndefined();
   });
 });

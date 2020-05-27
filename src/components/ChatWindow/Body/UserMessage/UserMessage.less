@@ -1,12 +1,13 @@
-.user-message {
+.sbu-user-message {
   display: flex;
-  width: 100%;
+  max-width: 100%;
   justify-content: flex-end;
   align-items: start;
-  margin-bottom: 5px;
+  margin-bottom: 0;
 
   &__wrapper {
     display: flex;
+    max-width: calc(100% - 60px);
     justify-content: right;
     flex-direction: column;
   }
@@ -23,23 +24,15 @@
     }
   }
 
-  .wrapper__message {
+  .sbu-wrapper__message {
     color: white;
     font-family: Roboto, sans-serif;
     font-size: 12px;
     line-height: 14px;
-    background: #021d61;
     border-radius: 30px;
-    margin-left: auto;
+    max-width: 100%;
     padding: 10px 15px 10px 15px;
-    max-width: calc(100% - 90px);
     word-wrap: break-word;
     white-space: pre-line;
-
-    @media only screen and (min-width: 500px) {
-      & {
-        max-width: 65%;
-      }
-    }
   }
 }

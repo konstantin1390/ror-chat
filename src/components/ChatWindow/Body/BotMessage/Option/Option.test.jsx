@@ -10,6 +10,7 @@ describe('Option component', () => {
   beforeEach(() => {
     const props = {
       answer: ['Yes'],
+      hasIcon: true,
     };
 
     wrapper = mount(<Option {...props} />);
@@ -39,6 +40,7 @@ describe('Option component', () => {
     const props = {
       fieldBackground: 'red',
       answer: ['yes'], //Required option
+      hasIcon: true,
     };
 
     wrapper = mount(<Option {...props} />);
@@ -58,6 +60,7 @@ describe('Option component', () => {
     const props = {
       fieldColor: 'red',
       answer: ['yes'], //Required option
+      hasIcon: true,
     };
 
     wrapper = mount(<Option {...props} />);
@@ -75,8 +78,9 @@ describe('Option component', () => {
 
   test('Should have custom color', () => {
     const props = {
-      fieldBorderColor: '10px dotted green',
+      fieldBorderColor: 'green',
       answer: ['yes'], //Required option
+      hasIcon: true,
     };
 
     wrapper = mount(<Option {...props} />);
@@ -85,6 +89,26 @@ describe('Option component', () => {
       wrapper.update();
     });
 
-    expect(wrapper).toHaveStyleRule('border', '10px dotted green');
+    expect(wrapper).toHaveStyleRule('border', '1px solid green');
+  });
+
+  test('Should called handler', () => {
+    const sendMessage = jest.fn();
+    const setIsClickedOption = jest.fn();
+    const props = {
+      sendMessage: sendMessage,
+      setIsClickedOption: setIsClickedOption,
+      answer: ['yes'], //Required option
+      hasIcon: true,
+    };
+
+    wrapper = mount(<Option {...props} />);
+
+    act(() => {
+      wrapper.update();
+    });
+    wrapper.simulate('click');
+    expect(sendMessage).toBeCalled();
+    expect(setIsClickedOption).toBeCalled();
   });
 });

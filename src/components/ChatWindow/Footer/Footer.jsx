@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import TextareaAutosize from 'react-textarea-autosize';
 import { ChatContext } from '../../Chat';
 import InputWrapper from './StyledInputWrapper';
 import FooterWrapper from './StyledFooter';
-import sendImg from '../../../../public/images/send.svg';
+import { sendImg } from '../../../constants';
 import localization from '../../../localization';
+import { cutValue, changeHeight } from './FooterHelper';
 import './Footer.less';
 
 export const Footer = props => {
@@ -23,6 +23,9 @@ export const Footer = props => {
     windowCurrentWidth,
     lang,
     setIsClickedOption,
+    currentWidth,
+    isRightResize,
+    isFullScreen,
   } = props;
 
   const setInputHandler = useCallback(e => {
@@ -42,15 +45,12 @@ export const Footer = props => {
         (e.shiftKey && inputLastChar === '\n') ||
         (e.shiftKey && inputFirstChar === '\n')
       ) {
-        setInputValue(value => value.slice(0, value.length - 1));
+        setInputValue(cutValue(inputValue));
       }
     }
   });
 
-  const changeHeightHandler = useCallback(e => {
-    setInputHeight(e);
-    inputValue.trim() === '' && setInputValue('');
-  });
+  const changeHeightHandler = useCallback(changeHeight(setInputHeight, inputValue, setInputValue));
 
   const buttonClickHandler = useCallback(e => {
     e.preventDefault();
@@ -61,18 +61,28 @@ export const Footer = props => {
 
   return (
     <FooterWrapper
-      className="Сhat-window___footer footer"
+      id="footer-wrapper"
+      isFullScreen={isFullScreen}
+      className="sbu-Сhat-window___footer sbu-footer"
+      currentWidth={currentWidth}
+      isRightResize={isRightResize}
       footerBackground={footerBackground}
       footerBorderColor={footerBorderColor}
+      data-footer-background={footerBackground}
+      data-footer-border-color={footerBorderColor}
     >
       <InputWrapper
-        className="footer__input-wrapper input-wrapper"
+        id="footer-input"
+        className="sbu-footer__input-wrapper sbu-input-wrapper"
         footerBackground={footerBackground}
+        data-footer-background={footerBackground}
       >
         <TextareaAutosize
-          className="input-wrapper__input"
+          id="input-field"
+          className="sbu-input-wrapper__input"
           wrap={self}
           maxRows={10}
+          name="input"
           value={inputValue}
           onChange={setInputHandler}
           style={{ color: inputColor || 'black' }}
@@ -80,20 +90,12 @@ export const Footer = props => {
           onKeyDown={keyPressHandler}
           onHeightChange={changeHeightHandler}
         />
-        <button className="input-wrapper__button" onClick={buttonClickHandler}>
+        <button id="send-button" className="sbu-input-wrapper__button" onClick={buttonClickHandler}>
           <img src={sendImg} alt="send" />
         </button>
       </InputWrapper>
     </FooterWrapper>
   );
-};
-
-Footer.propTypes = {
-  sendMessage: PropTypes.func,
-  inputColor: PropTypes.string,
-  inputPlaceholder: PropTypes.string,
-  footerBackground: PropTypes.string,
-  footerBorderColor: PropTypes.string,
 };
 
 export default props => (

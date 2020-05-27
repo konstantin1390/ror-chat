@@ -1,6 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { Header } from './Header';
+import HeaderConsumer from './Header';
 import { mount } from 'enzyme';
 import 'jest-styled-components';
 
@@ -27,10 +28,10 @@ describe('Header component', () => {
       wrapper.update();
     });
 
-    componentExit = wrapper.find('.wrapper__exit');
-    componentHeader = wrapper.find('.Chat-window__header header');
-    componentWrapper = wrapper.find('.header__wrapper wrapper');
-    img = wrapper.find('img').find('.nav__exit');
+    componentExit = wrapper.find('.sbu-header-wrapper__exit');
+    componentHeader = wrapper.find('.sbu-Chat-window__header sbu-header');
+    componentWrapper = wrapper.find('.sbu-header__header-wrapper sbu-header-wrapper');
+    img = wrapper.find('img').find('.sbu-nav__exit');
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -56,14 +57,14 @@ describe('Header component', () => {
   });
 
   test('Should rendered wrapper', () => {
-    const header = wrapper.find('.wrapper');
-    expect(header.props().className).toEqual('header__wrapper wrapper');
+    const header = wrapper.find('.sbu-header-wrapper');
+    expect(header.props().className).toEqual('sbu-header__header-wrapper sbu-header-wrapper');
   });
 
   test('Should rendered header', () => {
-    const wrapperHeader = wrapper.find('.wrapper');
-    const header = wrapperHeader.find('.wrapper__text');
-    expect(header.props().className).toEqual('wrapper__text');
+    const wrapperHeader = wrapper.find('.sbu-header-wrapper');
+    const header = wrapperHeader.find('.sbu-header-wrapper__text');
+    expect(header.props().className).toEqual('sbu-header-wrapper__text');
   });
 
   test('Should have custom background', () => {
@@ -110,13 +111,13 @@ describe('Header component', () => {
 
   describe('Exit Image', () => {
     test('Should render', () => {
-      const img = wrapper.find('img').find('.nav__change-size');
+      const img = wrapper.find('img').find('.sbu-nav__change-size');
       expect(img).toHaveLength(1);
       expect(img.length).toBe(1);
     });
 
     test('Should have custom alt attribute', () => {
-      const img = wrapper.find('img').find('.nav__exit');
+      const img = wrapper.find('img').find('.sbu-nav__exit');
       expect(img.props().alt).toBe('exit');
     });
 
@@ -125,5 +126,34 @@ describe('Header component', () => {
       expect(wrapper.props().toggleEnabled).toBeCalled();
       expect(toggleEnabled).toBeCalled();
     });
+  });
+
+  test('Should be "HeaderConsumer"', () => {
+    wrapper = mount(<HeaderConsumer />);
+
+    act(() => {
+      wrapper.update();
+    });
+    expect(wrapper).not.toBeUndefined();
+  });
+
+  test('Should called handler', () => {
+    const toggleFullScreen = jest.fn();
+    const changeSizeImg = jest.fn();
+    const props = {
+      isFullScreen: true,
+      toggleFullScreen: toggleFullScreen,
+      changeSizeImg: changeSizeImg,
+    };
+
+    wrapper = mount(<Header {...props} />);
+
+    act(() => {
+      wrapper.update();
+    });
+    const sizeImg = wrapper.find('.sbu-nav__change-size');
+    sizeImg.simulate('click');
+    expect(toggleFullScreen).toBeCalled();
+    expect(changeSizeImg).toBeCalled();
   });
 });

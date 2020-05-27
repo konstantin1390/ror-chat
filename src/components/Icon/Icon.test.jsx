@@ -15,8 +15,8 @@ describe('Icon component', () => {
       wrapper.update();
     });
 
-    componentAvatar = wrapper.find('.Chat-icon__avatar');
-    componentMessage = wrapper.find('.Chat-icon__message');
+    componentAvatar = wrapper.find('.sbu-Chat-icon__avatar');
+    componentMessage = wrapper.find('.sbu-Chat-icon__message');
   });
 
   afterEach(() => jest.clearAllMocks());
@@ -29,8 +29,8 @@ describe('Icon component', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  test('Should have className "chat-icon"', () => {
-    expect(wrapper.props().className).toEqual('Chat-icon');
+  test('Should have className "sbu-chat-icon"', () => {
+    expect(wrapper.props().className).toEqual('sbu-Chat-icon');
   });
 
   test('Should not be undefined Message component', () => {
@@ -42,8 +42,8 @@ describe('Icon component', () => {
     expect(componentMessage).toHaveLength(1);
   });
 
-  test('Should have className "chat-icon__message" in Massage component', () => {
-    expect(componentMessage.props().className).toEqual('Chat-icon__message');
+  test('Should have className "sbu-chat-icon__message" in Massage component', () => {
+    expect(componentMessage.props().className).toEqual('sbu-Chat-icon__message');
   });
 
   test('Should not be undefined Avatar component', () => {
@@ -55,8 +55,8 @@ describe('Icon component', () => {
     expect(componentAvatar).toHaveLength(1);
   });
 
-  test('Should have className "chat-icon__avatar" in Avatar component', () => {
-    expect(componentAvatar.props().className).toEqual('Chat-icon__avatar');
+  test('Should have className "sbu-chat-icon__avatar" in Avatar component', () => {
+    expect(componentAvatar.props().className).toEqual('sbu-Chat-icon__avatar');
   });
 
   test('Should rendered Avatar and Message components', () => {

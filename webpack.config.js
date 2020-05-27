@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CssWebpackPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -25,6 +26,10 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      react: 'preact/compat',
+      'react-dom': 'preact/compat',
+    },
   },
   module: {
     rules: [
@@ -75,5 +80,6 @@ module.exports = {
     new CssWebpackPlugin({
       filename: 'style.css',
     }),
+    new MinifyPlugin(),
   ],
 };

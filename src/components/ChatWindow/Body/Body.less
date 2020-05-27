@@ -1,9 +1,10 @@
-.body {
+.sbu-body {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 50px;
 
   &__box {
     width: 100%;
@@ -20,7 +21,8 @@
   align-items: center;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 500px) and (orientation: portrait),
+  only screen and (max-height: 500px) and (orientation: landscape) {
   .ScrollbarsCustom-Track {
     display: none !important;
   }
