@@ -1,0 +1,56 @@
+.message__typing {
+  background: #e5e5e5;
+  width: 55px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  margin-left: 60px;
+
+  img {
+    border-radius: 10px;
+    max-width: 35px;
+    max-height: 40px;
+    margin: auto auto;
+  }
+  .circle {
+    width: 50px;
+    margin: auto;
+  }
+  .circleG {
+    background-color: rgb(255, 255, 255);
+    float: left;
+    height: 10px;
+    margin-left: 5px;
+    width: 10px;
+    animation-name: bounce_circleG;
+    animation-duration: 2.24s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    border-radius: 20px;
+  }
+
+  .first {
+    animation-delay: 0.45s;
+  }
+
+  .second {
+    animation-delay: 1.05s;
+  }
+
+  .third {
+    animation-delay: 1.35s;
+  }
+
+  @keyframes bounce_circleG {
+    0% {
+    }
+
+    50% {
+      background-color: rgb(0, 0, 0);
+    }
+
+    100% {
+    }
+  }
+}

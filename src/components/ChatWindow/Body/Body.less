@@ -1,0 +1,27 @@
+.body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  &__box {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+}
+.ScrollbarsCustom-Content {
+  position: relative;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media only screen and (max-width: 500px) {
+  .ScrollbarsCustom-Track {
+    display: none !important;
+  }
+}

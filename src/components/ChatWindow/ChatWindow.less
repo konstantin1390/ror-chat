@@ -1,0 +1,25 @@
+.Сhat-window {
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 500px) and (orientation: portrait),
+  only screen and (max-height: 500px) and (orientation: landscape) {
+  .nav__change-size {
+    display: none;
+  }
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+  .body__box {
+    padding: 0 10px 20px 10px;
+  }
+}
