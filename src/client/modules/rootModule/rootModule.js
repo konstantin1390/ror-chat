@@ -5,9 +5,7 @@ import './rootModule.less'
 class RootModule extends Component {
     render() {
         return (
-            // <div className="Root">
-                <ResizableWrapper/>
-            // </div>
+            <ResizableWrapper/>
         );
     }
 }
