@@ -115,8 +115,16 @@ export const dragElement = (node, handleNode) => {
     secondPosition = fourthPosition - e.clientY;
     thirdPosition = e.clientX;
     fourthPosition = e.clientY;
-    node.current.style.top = `${node.current.offsetTop - secondPosition}px`;
-    node.current.style.left = `${node.current.offsetLeft - firstPosition}px`;
+    if (
+      node.current.offsetTop - secondPosition >= 5 &&
+      e.view.outerHeight >= node.current.offsetTop - secondPosition + node.current.offsetHeight
+    )
+      node.current.style.top = `${node.current.offsetTop - secondPosition}px`;
+    if (
+      node.current.offsetLeft - firstPosition >= 5 &&
+      e.view.outerWidth >= node.current.offsetLeft - firstPosition + node.current.offsetWidth
+    )
+      node.current.style.left = `${node.current.offsetLeft - firstPosition}px`;
   };
 
   const dragMouseDown = e => {

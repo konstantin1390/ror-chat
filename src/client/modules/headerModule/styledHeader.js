@@ -16,8 +16,8 @@ export const Header = styled.div`
 //   width: ${props => (props.isFullScreen ? '100%' : `${props.currentWidth}px`)};
 // }
 
-Header.icon =  styled.div`
-height: 3rem;
-width: 3rem;
-margin: 0.25rem;
+Header.icon = styled.div`
+  height: 3rem;
+  width: 3rem;
+  margin: 0.25rem;
 `;

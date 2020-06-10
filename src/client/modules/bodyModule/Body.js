@@ -1,7 +1,7 @@
 import React from 'react';
-import {Body} from './styledBody';
+import { Body } from './styledBody';
 import SidebarModule from '../sidebarModule/Sidebar';
-import ContentModule from "../contentModule/Content";
+import ContentModule from '../contentModule/Content';
 
 const BodyModule = () => {
   return (

@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Body = styled.div`
-display: flex;
-    height: calc(100% - 55px);
+  display: flex;
+  height: calc(100% - 55px);
 `;

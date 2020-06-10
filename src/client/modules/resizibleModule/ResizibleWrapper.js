@@ -3,7 +3,6 @@ import { dragElement, resizeElement } from './ResizableWrapperLogic';
 import HeaderModule from '../headerModule/Header';
 import BodyModule from '../bodyModule/Body';
 import './ResizableWrapper.less';
-import Resizable from './styledResizableWrapper';
 
 const ResizableWrapper = () => {
   const resizableEl = useRef(null);
@@ -23,10 +22,10 @@ const ResizableWrapper = () => {
         <div className="resizer left" />
         <div className="resizer bottom" />
         <div className="resizer right" />
-        <div className="resizer circle top-left" />
-        <div className="resizer circle top-right" />
-        <div className="resizer circle bottom-left" />
-        <div className="resizer circle bottom-right" />
+        <div className="resizer top-left" />
+        <div className="resizer top-right" />
+        <div className="resizer bottom-left" />
+        <div className="resizer bottom-right" />
       </div>
     </div>
   );
