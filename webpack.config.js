@@ -5,14 +5,18 @@ const MinifyPlugin = require('babel-minify-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
-  entry: './src/index.jsx',
+  mode: 'development',
+  watch: true,
+  entry: {
+    public: path.resolve(__dirname, './src/index.jsx'),
+  },
   output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'index-bundle.js',
+    path: path.resolve(__dirname, './build'),
+    filename: 'index.js',
   },
   devServer: {
     port: 3010,
-    contentBase: path.resolve(__dirname, './dist'),
+    //contentBase: path.resolve(__dirname, './dist'),
     hot: true,
     open: true,
     watchContentBase: true,
@@ -51,11 +55,23 @@ module.exports = {
           },
         ],
       },
+      { test: /\.html$/, use: 'html-loader' },
+      {
+        test: /\.(svg|png|jpg|jpeg|gif)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: './images/',
+          },
+        },
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: path.resolve(__dirname, './public/index.html'),
+      filename: 'index.html',
     }),
     new CssWebpackPlugin({
       filename: 'style.css',
