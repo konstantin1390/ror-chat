@@ -9,7 +9,7 @@ export const Header = styled.div`
   border: 1px solid ${props => props.headerBorderColor || 'black'};
 
   &:active {
-    cursor: ${props => (props.disableDraggable ? 'default' : 'grabbing')};
+    cursor: ${props => (props.isFullScreen ? 'default' : 'grabbing')};
   }
 `;
 
@@ -29,7 +29,6 @@ Header.buttons = styled.div`
   top: 0;
   right: 0;
   height: 100%;
-  
 `;
 
 export const ExitBtn = styled.img`

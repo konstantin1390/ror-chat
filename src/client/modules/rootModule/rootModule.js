@@ -1,15 +1,22 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import ResizableModule from '../resizibleModule/ResizableModule';
-import './rootModule.less';
+import MainModule from '../mainModule/MainModule';
 
-class RootModule extends Component {
-  render() {
-    return (
-      <>
-        <ResizableModule />
-      </>
-    );
-  }
-}
+const RootModule = () => {
+  const [isFullScreen, setFullScreen] = useState(false);
+  const toggleMode = () => {
+    setFullScreen(!isFullScreen);
+  };
+
+  return (
+    <>
+      {isFullScreen ? (
+        <MainModule isFullScreen={isFullScreen} toggleMode={toggleMode} />
+      ) : (
+        <ResizableModule toggleMode={toggleMode} />
+      )}
+    </>
+  );
+};
 
 export default RootModule;

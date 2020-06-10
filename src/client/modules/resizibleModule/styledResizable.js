@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default styled.div`
+export const Resizable = styled.div`
   display: flex;
   flex: auto;
   border-radius: 4px;

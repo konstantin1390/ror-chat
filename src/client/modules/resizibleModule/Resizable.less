@@ -1,4 +1,4 @@
-.resizers {
+.resize {
   .top {
     position: absolute;
     user-select: none;
@@ -39,71 +39,43 @@
     cursor: col-resize;
   }
 
-  .resizer {
-    .top-right {
-      right: -5px;
-      top: -5px;
-      cursor: nesw-resize;
-    }
-
-    .top-left {
-      left: -5px;
-      top: -5px;
-      cursor: nwse-resize;
-    }
-
-    .bottom-left {
-      left: -5px;
-      bottom: -5px;
-      cursor: nesw-resize;
-    }
-
-    .bottom-right {
-      right: -5px;
-      bottom: -5px;
-      cursor: nwse-resize;
-    }
+  .top-right {
+    position: absolute;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    right: -10px;
+    top: -10px;
+    cursor: ne-resize;
   }
 
-  .resizer {
-    &.top-right {
-      position: absolute;
-      user-select: none;
-      width: 20px;
-      height: 20px;
-      right: -10px;
-      top: -10px;
-      cursor: ne-resize;
-    }
+  .top-left {
+    position: absolute;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    left: -10px;
+    top: -10px;
+    cursor: nw-resize;
+  }
 
-    &.top-left {
-      position: absolute;
-      user-select: none;
-      width: 20px;
-      height: 20px;
-      left: -10px;
-      top: -10px;
-      cursor: nw-resize;
-    }
+  .bottom-left {
+    position: absolute;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    left: -10px;
+    bottom: -10px;
+    cursor: sw-resize;
+  }
 
-    &.bottom-left {
-      position: absolute;
-      user-select: none;
-      width: 20px;
-      height: 20px;
-      left: -10px;
-      bottom: -10px;
-      cursor: sw-resize;
-    }
-
-    &.bottom-right {
-      position: absolute;
-      user-select: none;
-      width: 20px;
-      height: 20px;
-      right: -10px;
-      bottom: -10px;
-      cursor: se-resize;
-    }
+  .bottom-right {
+    position: absolute;
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    right: -10px;
+    bottom: -10px;
+    cursor: se-resize;
   }
 }
