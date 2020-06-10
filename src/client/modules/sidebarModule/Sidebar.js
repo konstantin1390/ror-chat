@@ -7,7 +7,7 @@ const SidebarModule = () => {
     <Sidebar>
       <Sidebar.header>
         <Search>
-          <img src="public/search-icon.svg" alt="search-icon" />
+          <img src="public/images/search-icon.svg" alt="search-icon" />
           <Search.input></Search.input>
         </Search>
       </Sidebar.header>

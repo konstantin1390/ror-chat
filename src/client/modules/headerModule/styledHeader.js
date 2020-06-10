@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export default styled.div`
-  min-height: 50px;
+export const Header = styled.div`
+  min-height: 3.2rem;
   color: ${props => props.headerColor || '#FFFFFF'};
   background: ${props => props.headerBackground || '#12171e'};
   width: 100%;
@@ -16,3 +16,9 @@ export default styled.div`
 // @media only screen and (min-width: 1024px) and (min-height: 570px) {
 //   width: ${props => (props.isFullScreen ? '100%' : `${props.currentWidth}px`)};
 // }
+
+Header.icon =  styled.div`
+height: 3rem;
+width: 3rem;
+margin: 0.25rem;
+`;

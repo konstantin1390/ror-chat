@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { dragElement, resizeElement } from './ResizableWrapperLogic';
-import Header from '../headerModule/Header';
+import HeaderModule from '../headerModule/Header';
 import Body from '../bodyModule/Body';
 import './ResizableWrapper.less';
 import Resizable from './styledResizableWrapper';
@@ -16,7 +16,7 @@ const ResizableWrapper = () => {
 
   return (
     <div className="resizable-layout" ref={resizableEl}>
-      <Header refNode={draggableEl} />
+      <HeaderModule refNode={draggableEl} />
       <Body />
       <div className="resizers" ref={resizableChild}>
         <div className="resizer top" />

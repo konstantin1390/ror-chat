@@ -1,8 +1,12 @@
 import React from 'react';
-import HeaderWrapper from './styledHeader';
+import {Header} from './styledHeader';
 
-const Header = ({ refNode }) => {
-  return <HeaderWrapper ref={refNode}>lol</HeaderWrapper>;
+const HeaderModule = ({refNode}) => {
+    return <Header ref={refNode}>
+        <Header.icon>
+          <img src="public/images/chat-icon.svg" alt="chat-icon"/>
+        </Header.icon>
+    </Header>;
 };
 
-export default Header;
+export default HeaderModule;
