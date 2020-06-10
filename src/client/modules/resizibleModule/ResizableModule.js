@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { dragElement, resizeElement } from './ResizableLogic';
 import HeaderModule from '../headerModule/Header';
 import BodyModule from '../bodyModule/Body';
@@ -9,14 +9,23 @@ const ResizableWrapper = () => {
   const resizableEl = useRef(null);
   const draggableEl = useRef(null);
   const resizableChild = useRef(null);
+  const [isFullScreen, setFullScreen] = useState(false);
   useEffect(() => {
     resizeElement(resizableEl, resizableChild);
     dragElement(resizableEl, draggableEl);
   }, []);
 
+  const toggleMode = () => {
+    setFullScreen(!isFullScreen);
+  };
+
   return (
-    <Resizable ref={resizableEl}>
-      <HeaderModule refNode={draggableEl} />
+    <Resizable isFullScreen={isFullScreen} ref={resizableEl}>
+      <HeaderModule
+        isFullScreen={isFullScreen}
+        toggleFullScreen={toggleMode}
+        refNode={draggableEl}
+      />
       <BodyModule />
       <div className="resizers" ref={resizableChild}>
         <div className="resizer top" />
