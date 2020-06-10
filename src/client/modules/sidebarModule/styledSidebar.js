@@ -4,7 +4,6 @@ export const Sidebar = styled.div`
   background-color: #202933;
   display: flex;
   flex-direction: column;
-  height: 100vh;
   min-width: 245px;
   max-width: 300px;
 `;

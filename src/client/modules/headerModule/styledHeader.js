@@ -4,7 +4,6 @@ export const Header = styled.div`
   min-height: 3.2rem;
   color: ${props => props.headerColor || '#FFFFFF'};
   background: ${props => props.headerBackground || '#12171e'};
-  width: 100%;
   top: 0;
   border: 1px solid ${props => props.headerBorderColor || 'black'};
 

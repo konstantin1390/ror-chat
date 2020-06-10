@@ -8,7 +8,8 @@ const SidebarModule = () => {
       <Sidebar.header>
         <Search>
           <img src="public/images/search-icon.svg" alt="search-icon" />
-          <Search.input></Search.input>
+          {/*TODO: add intl*/}
+          <Search.input placeholder="Search"/>
         </Search>
       </Sidebar.header>
     </Sidebar>

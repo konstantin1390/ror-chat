@@ -1,13 +1,15 @@
 import React from 'react';
-import BodyWrapper from './styledBody';
+import {Body} from './styledBody';
 import SidebarModule from '../sidebarModule/Sidebar';
+import ContentModule from "../contentModule/Content";
 
-const Body = () => {
+const BodyModule = () => {
   return (
-    <>
+    <Body>
       <SidebarModule />
-    </>
+      <ContentModule />
+    </Body>
   );
 };
 
-export default Body;
+export default BodyModule;
