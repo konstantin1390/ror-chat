@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import ResizableWrapper from '../resizibleModule/ResizibleWrapper';
+import ResizableModule from '../resizibleModule/ResizableModule';
 import './rootModule.less';
 
 class RootModule extends Component {
   render() {
     return (
       <>
-        <ResizableWrapper />
+        <ResizableModule />
       </>
     );
   }

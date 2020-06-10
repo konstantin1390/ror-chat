@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { dragElement, resizeElement } from './ResizableWrapperLogic';
+import { dragElement, resizeElement } from './ResizableLogic';
 import HeaderModule from '../headerModule/Header';
 import BodyModule from '../bodyModule/Body';
-import './ResizableWrapper.less';
+import Resizable from './styledResizable';
+import './Resizable.less';
 
 const ResizableWrapper = () => {
   const resizableEl = useRef(null);
@@ -14,7 +15,7 @@ const ResizableWrapper = () => {
   }, []);
 
   return (
-    <div className="resizable-layout" ref={resizableEl}>
+    <Resizable ref={resizableEl}>
       <HeaderModule refNode={draggableEl} />
       <BodyModule />
       <div className="resizers" ref={resizableChild}>
@@ -27,7 +28,7 @@ const ResizableWrapper = () => {
         <div className="resizer bottom-left" />
         <div className="resizer bottom-right" />
       </div>
-    </div>
+    </Resizable>
   );
 };
 
